@@ -116,7 +116,8 @@
 
   .video-shell{position:relative;border-radius:14px;overflow:hidden;border:1px solid var(--rule);background:var(--ink);box-shadow:0 24px 60px -20px rgba(15,27,45,.35);aspect-ratio:16/10;margin-top:8px}
   .video-shell video{width:100%;height:100%;display:block;object-fit:cover}
-  .video-placeholder{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;color:#8A96A3;background:linear-gradient(160deg,#111D2E 0%,#0B1420 100%)}
+  .video-placeholder{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;color:#fff;background:rgba(11,20,32,.35);cursor:pointer;transition:background .15s}
+  .video-placeholder:hover{background:rgba(11,20,32,.5)}
   .video-placeholder .vp-icon{width:52px;height:52px;border-radius:50%;background:rgba(255,255,255,.06);display:flex;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,.1)}
   .video-placeholder .vp-icon svg{width:20px;height:20px}
   .video-placeholder .vp-label{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#8A96A3}
@@ -180,7 +181,7 @@
 
   <section class="hero">
     <h1>Simple, Automated, Accounting.</h1>
-    <p class="hero-sub">Connect your bank accounts and wallets. Shepherd's AI learns your business and closes your books daily. Multi-asset, multi-chain, reconciled to the source, fully auditable, synced to your ERP daily.</p>
+    <p class="hero-sub">Connect your bank accounts and wallets. Shepherd classifies every transaction with AI and closes your books daily. Multi-asset, multi-chain, reconciled to the source, fully auditable, synced to your ERP daily.</p>
     <div class="hero-actions">
       <a class="btn-primary" href="#" onclick="openBetaModal();return false">Request Access</a>
       <span class="hero-note">Shepherd is working with a small number of businesses right now to shape the product around real usage.</span>
@@ -200,7 +201,7 @@
         <div class="traw-row"><span class="traw-k">DIRECTION</span><span class="traw-v">Outflow</span></div>
         <div class="traw-row"><span class="traw-k">AMOUNT</span><span class="traw-v">$306.00 USDC</span></div>
         <div class="traw-row"><span class="traw-k">COUNTERPARTY</span><span class="traw-v dim">0xb8c6...fa9a</span></div>
-        <span class="traw-pending">Raw Transactions</span>
+        <span class="traw-pending">Unclassified</span>
       </div>
       <div class="tarrow">
         <div class="tarrow-circle">
@@ -213,7 +214,7 @@
         <div class="jrow"><span class="acct">Digital Asset - USDC</span><span class="amt">&mdash;</span><span class="amt on">$306.00</span></div>
         <div class="jrow"><span class="acct">Network Fees</span><span class="amt on">$0.0004</span><span class="amt">&mdash;</span></div>
         <div class="jrow"><span class="acct">Digital Asset - ETH</span><span class="amt">&mdash;</span><span class="amt on">$0.0004</span></div>
-        <span class="treconciled">AI transaction coding</span>
+        <span class="treconciled">Debits = Credits</span>
       </div>
       <div class="tarrow second">
         <div class="tarrow-circle">
@@ -226,7 +227,7 @@
         <div class="jrow"><span class="acct">Digital Asset - USDC</span><span class="amt">$204,118.76</span><span class="amt on">&minus;$306.00</span></div>
         <div class="jrow"><span class="acct">Network Fees</span><span class="amt">$92.31</span><span class="amt on">+$0.0004</span></div>
         <div class="jrow"><span class="acct">Digital Asset - ETH</span><span class="amt">$1,204.55</span><span class="amt on">&minus;$0.0004</span></div>
-        <span class="treconciled">Books updated</span>
+        <span class="treconciled">Balances updated</span>
       </div>
     </div>
 
@@ -257,22 +258,21 @@
       <div class="eyebrow">See it in action</div>
       <h2>True daily close has arrived.</h2>
     </div>
-    <div class="video-shell">
-      <video id="demoVideo" autoplay muted loop playsinline
-        onerror="this.style.display='none'"
-        onloadeddata="var p=document.getElementById('videoPlaceholder');if(p)p.style.display='none'">
+    <div class="video-shell" id="videoShell">
+      <video id="demoVideo" playsinline preload="metadata"
+        onerror="document.getElementById('videoShell').style.display='none'"
+        onplay="document.getElementById('playOverlay').style.display='none'"
+        onpause="document.getElementById('playOverlay').style.display='flex'">
         <source src="shepherd-demo.mp4" type="video/mp4">
       </video>
-      <div class="video-placeholder" id="videoPlaceholder">
-        <div class="vp-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.348a1.125 1.125 0 0 1 0 1.971l-11.54 6.347a1.125 1.125 0 0 1-1.667-.985V5.653Z"/></svg>
+      <div class="video-placeholder" id="playOverlay" onclick="playDemoVideo()">
+        <div class="vp-icon" style="width:64px;height:64px">
+          <svg viewBox="0 0 24 24" fill="currentColor" style="margin-left:3px"><path d="M8 5v14l11-7z"/></svg>
         </div>
-        <div class="vp-label">Product walkthrough coming soon</div>
       </div>
     </div>
     <div class="video-caption">
       <span>Banks, wallets, and stablecoin activity, classified and reconciled live</span>
-      <span>0:00 / 0:24</span>
     </div>
   </section>
 
@@ -311,13 +311,6 @@
       <h2>The parts that actually matter.</h2>
     </div>
 
-   <div class="cap-row">
-      <div class="cap-label">One ledger</div>
-      <div class="cap-text">
-        <h4>One ledger for all your assets</h4>
-        <p>Bank account and wallet activity run on a single classification engine and a unified platform. No more disconnected systems that don't talk to each other.</p>
-      </div>
-    </div>
     <div class="cap-row">
       <div class="cap-label">Reconciliation</div>
       <div class="cap-text">
@@ -325,19 +318,25 @@
         <p>Shepherd checks its own math against a live balance query to the blockchain, and separately against your ERP's own account balances. That means "reconciled" is independently proven, not self-reported.</p>
       </div>
     </div>
-    
-        <div class="cap-row">
-      <div class="cap-label">Audit trail</div>
-      <div class="cap-text">
-        <h4>Every action, timestamped</h4>
-        <p>Classifications, rescans, rule changes, and exports are logged as they happen and exportable on demand, built to hold up when someone asks how a number was produced.</p>
-      </div>
-    </div>
     <div class="cap-row">
       <div class="cap-label">Fair value</div>
       <div class="cap-text">
         <h4>ASC 820 period-end remeasurement</h4>
         <p>Non-stablecoin holdings get marked to fair value each period with a full disclosure rollforward: opening balance, additions, dispositions, unrealized gain or loss, and closing balance, by asset.</p>
+      </div>
+    </div>
+    <div class="cap-row">
+      <div class="cap-label">One ledger</div>
+      <div class="cap-text">
+        <h4>One ledger for all your assets</h4>
+        <p>Bank account and wallet activity run on a single classification engine and a unified platform. No more disconnected systems that don't talk to each other.</p>
+      </div>
+    </div>
+    <div class="cap-row">
+      <div class="cap-label">Audit trail</div>
+      <div class="cap-text">
+        <h4>Every action, timestamped</h4>
+        <p>Classifications, rescans, rule changes, and exports are logged as they happen and exportable on demand, built to hold up when someone asks how a number was produced.</p>
       </div>
     </div>
   </section>
@@ -375,6 +374,16 @@
 </div>
 
 <script>
+function playDemoVideo(){
+  var v=document.getElementById('demoVideo');
+  if(!v)return;
+  if(v.paused){
+    v.controls=true; // native play/pause/volume/seek once playback starts
+    v.play();
+  } else {
+    v.pause();
+  }
+}
 function openBetaModal(){
   document.getElementById('betaOverlay').classList.add('open');
   document.getElementById('betaFormWrap').style.display='block';
