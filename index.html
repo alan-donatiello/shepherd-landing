@@ -55,9 +55,9 @@
   .badge svg,.badge img{display:block}
 
   .word-anim{display:flex;flex-wrap:wrap;align-items:baseline;gap:10px;margin-bottom:24px}
-  .word-item{font-family:var(--serif);font-size:26px;font-weight:500;color:var(--ink);opacity:0;transform:translateY(6px);animation:wordIn .5s ease forwards}
+  .word-item{font-family:var(--serif);font-size:26px;font-weight:500;color:var(--ink);line-height:1.1;opacity:0;transform:translateY(6px);animation:wordIn .5s ease forwards}
   @keyframes wordIn{to{opacity:1;transform:translateY(0)}}
-  .ledger-line{font-family:var(--serif);font-size:26px;font-weight:500;color:var(--ink);opacity:0;transform:translateY(6px);animation:wordIn .6s ease forwards;animation-delay:1.3s}
+  .ledger-line{font-family:var(--serif);font-size:26px;font-weight:500;color:var(--ink);line-height:1.1;opacity:0;transform:translateY(6px);animation:wordIn .6s ease forwards;animation-delay:1.3s}
   @media(prefers-reduced-motion:reduce){.word-item,.ledger-line{animation:none;opacity:1;transform:none}}
 
   .transform{margin-top:8px;position:relative;display:grid;grid-template-columns:1fr 44px 1fr 44px 1fr;align-items:stretch;gap:0;width:100%}
